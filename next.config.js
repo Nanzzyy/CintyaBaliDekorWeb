@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: 'standalone', // PENTING: untuk Docker optimasi
   images: {
-    domains: ['*.supabase.co']
+    domains: ['your-domain.com'],
+    unoptimized: true,
   },
-  experimental: {},
-};
-module.exports = nextConfig;
+}
+
+module.exports = nextConfig

@@ -1,26 +1,64 @@
 version: '3.8'
+
 services:
-  web-app:
+  # ===== Database Service =====
+  db:
+    image: postgres:15-alpine
+    container_name: cintya-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER:-cintya}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-cintya_secret_2024}
+      POSTGRES_DB: ${DB_NAME:-cintya_dekorasi}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - cintya-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ===== Aplikasi Web (FE + BE) =====
+  web:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "3005:3000"
-    environment:
-      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
-      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+    container_name: cintya-web
     restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Database connection menggunakan nama service 'db'
+      DATABASE_URL: "postgresql://${DB_USER:-cintya}:${DB_PASSWORD:-cintya_secret_2024}@db:5432/${DB_NAME:-cintya_dekorasi}"
+      NODE_ENV: production
+      # Tambahkan env lain yang diperlukan
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - cintya-network
+
+  # ===== Cloudflare Tunnel (Opsional untuk Go-Live) =====
   cloudflared:
     image: cloudflare/cloudflared:latest
+    container_name: cintya-tunnel
     command: tunnel run
     environment:
       - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
     restart: unless-stopped
     networks:
       - cintya-network
+    depends_on:
+      - web
+
+volumes:
+  pgdata:
+    driver: local
+
 networks:
   cintya-network:
     driver: bridge
