@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
@@ -91,3 +92,24 @@ const config: Config = {
   plugins: [],
 }
 export default config
+=======
+module.exports = {
+
+  content: [
+
+    './pages/**/*.{js,ts,jsx,tsx}',
+
+    './components/**/*.{js,ts,jsx,tsx}',
+
+  ],
+
+  theme: {
+
+    extend: {},
+
+  },
+
+  plugins: [],
+
+};
+>>>>>>> 380df23ce009fbc0877bf92a43e148d857e57871

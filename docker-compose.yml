@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+<<<<<<< HEAD
   # ===== Database Service =====
   db:
     image: postgres:15-alpine
@@ -23,11 +24,23 @@ services:
       retries: 5
 
   # ===== Aplikasi Web (FE + BE) =====
+=======
+>>>>>>> 380df23ce009fbc0877bf92a43e148d857e57871
   web:
     build:
       context: .
       dockerfile: Dockerfile
+<<<<<<< HEAD
     container_name: cintya-web
+=======
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+>>>>>>> 380df23ce009fbc0877bf92a43e148d857e57871
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -42,11 +55,17 @@ services:
     networks:
       - cintya-network
 
+<<<<<<< HEAD
   # ===== Cloudflare Tunnel (Opsional untuk Go-Live) =====
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cintya-tunnel
     command: tunnel run
+=======
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --url http://web:3000
+>>>>>>> 380df23ce009fbc0877bf92a43e148d857e57871
     environment:
       - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
     restart: unless-stopped
@@ -55,10 +74,13 @@ services:
     depends_on:
       - web
 
+<<<<<<< HEAD
 volumes:
   pgdata:
     driver: local
 
+=======
+>>>>>>> 380df23ce009fbc0877bf92a43e148d857e57871
 networks:
   cintya-network:
     driver: bridge
