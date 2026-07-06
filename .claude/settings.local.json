@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l main.py agents.py test_tool.py knowledge/*.md)",
+      "Bash(sed 's/=.*/=***/' .env)"
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-[#1A1A2E] font-sans antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/30 backdrop-blur-xl backdrop-saturate-150 
+           border border-white/30 shadow-xl shadow-black/5 
+           rounded-3xl transition-all duration-300;
+  }
+  
+  .glass-card-hover {
+    @apply glass-card hover:bg-white/40 hover:shadow-2xl hover:shadow-primary/10 
+           hover:border-primary/20 hover:scale-[1.02];
+  }
+  
+  .premium-input {
+    @apply w-full px-5 py-4 bg-white/60 backdrop-blur-sm 
+           border border-white/30 rounded-2xl text-[#1A1A2E] 
+           placeholder:text-[#8E8E9A]/60 
+           focus:outline-none focus:ring-2 focus:ring-primary/30 
+           focus:border-primary/50 focus:bg-white/80
+           transition-all duration-300;
+  }
+  
+  .premium-btn {
+    @apply relative overflow-hidden px-8 py-4 rounded-2xl 
+           bg-gradient-primary text-white font-semibold 
+           shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40
+           hover:scale-[1.02] active:scale-[0.98]
+           transition-all duration-300
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
+  }
+  
+  .premium-btn-secondary {
+    @apply premium-btn bg-gradient-gold text-[#1A1A2E] 
+           shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40;
+  }
+  
+  .premium-input-icon {
+    @apply absolute left-4 top-1/2 -translate-y-1/2 text-[#8E8E9A] w-5 h-5;
+  }
+  
+  .stat-card {
+    @apply glass-card p-6 hover:bg-white/40;
+  }
+  
+  .section-title {
+    @apply text-lg font-semibold text-[#1A1A2E] tracking-tight;
+  }
+}

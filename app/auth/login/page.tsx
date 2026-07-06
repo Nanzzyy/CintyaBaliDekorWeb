@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/hooks/useAuth';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const { login } = useAuth();
   const router = useRouter();
 
@@ -21,8 +22,9 @@ const LoginPage = () => {
           router.push('/staff');
         }
       }
-    } catch (error) {
-      console.error('Login failed:', error);
+    } catch (err: any) {
+      console.error('Login failed:', err);
+      setError(err.message || 'Terjadi kesalahan saat login.');
     }
   };
 
