@@ -1,26 +1,32 @@
 version: '3.8'
+
 services:
-  web-app:
+  web:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3005:3000"
+      - "3000:3000"
     environment:
       - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
       - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
     restart: unless-stopped
     networks:
       - cintya-network
+
   cloudflared:
     image: cloudflare/cloudflared:latest
-    command: tunnel run
+    command: tunnel --no-autoupdate run --url http://web:3000
     environment:
       - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
     restart: unless-stopped
     networks:
       - cintya-network
+    depends_on:
+      - web
+
 networks:
   cintya-network:
     driver: bridge
